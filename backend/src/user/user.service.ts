@@ -19,15 +19,12 @@ export class UserService {
           this.userRepo.findOne({ where: { email: data.email } }),
           this.userRepo.findOne({ where: { username: data.username } }),
         ]);
-
       if (existingUserWithEmail) {
         throw new Error('Email already in use');
       }
-
       if (existingUserWithUsername) {
         throw new Error('Username already in use');
       }
-
       const user = this.userRepo.create(data);
       await this.userRepo.save(user);
       return user;

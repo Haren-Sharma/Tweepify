@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class TweetService {
   constructor(@InjectRepository(Tweet) private tweetRepo: Repository<Tweet>) {}
-  async createUser(data: CreateTweetDto) {
+  async createTweet(data: CreateTweetDto) {
     const tweet = this.tweetRepo.create(data);
     await this.tweetRepo.save(tweet);
     return tweet;
