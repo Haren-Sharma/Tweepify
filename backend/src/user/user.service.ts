@@ -40,7 +40,7 @@ export class UserService {
   }
 
   async list() {
-    return await this.userRepo.find({});
+    return await this.userRepo.find({relations:['tweets']});
   }
 
   async update(id: string, data: UpdateUserDto) {

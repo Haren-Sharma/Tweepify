@@ -8,19 +8,20 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class TweetService {
   constructor(@InjectRepository(Tweet) private tweetRepo: Repository<Tweet>) {}
   async createTweet(data: CreateTweetDto) {
-    const tweet = this.tweetRepo.create(data);
+    const {userId,content,image}=data;
+    const tweet = this.tweetRepo.create({content,image,user:{id:userId}});
     await this.tweetRepo.save(tweet);
     return tweet;
   }
 
   async getOne(id: string) {
     const tweet = await this.tweetRepo.findOne({ where: { id } });
-    if (!tweet) throw new NotFoundException('User Doesnot Exsist');
+    if (!tweet) throw new NotFoundException('Doesnot Exsist');
     return tweet;
   }
 
   async list() {
-    return await this.tweetRepo.find({});
+    return await this.tweetRepo.find({relations:['user']});
   }
 
   async delete(id: string) {
