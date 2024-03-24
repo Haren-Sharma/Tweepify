@@ -7,7 +7,8 @@ export class CreateTweetDto {
   @IsOptional()
   @IsString()
   image?: string;
-
+  
+  @IsOptional()
   @IsNumber()
-  impression: number;
+  impression?: number;
 }

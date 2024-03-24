@@ -1,10 +1,17 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Tweet } from './tweet.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @OneToMany(() => Tweet, (tweet) => tweet.user)
   tweets: Tweet[];
@@ -15,7 +22,7 @@ export class User {
   @Column()
   name: string;
 
-  @Column({unique:true})
+  @Column({ unique: true })
   username: string;
 
   @Column({ nullable: true })
@@ -26,4 +33,14 @@ export class User {
 
   @Column({ default: false })
   isVerified: boolean;
+
+  @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 }

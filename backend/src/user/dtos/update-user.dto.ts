@@ -1,14 +1,17 @@
 import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
 
-export class CreateUserDto {
-  @IsEmail({},{message:'Email should be unique'})
-  email: string;
+export class UpdateUserDto {
+  @IsOptional()
+    @IsEmail()
+  email?: string;
 
+  @IsOptional()
   @IsString()
-  name: string;
+  name?: string;
 
-  @IsString({message:"Username should be unique"})
-  username: string;
+  @IsOptional()
+  @IsString()
+  username?: string;
 
   @IsOptional()
   @IsString()
@@ -17,7 +20,7 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   bio?: string;
-  
+
   @IsOptional()
   @IsBoolean()
   isVerified?: boolean;
