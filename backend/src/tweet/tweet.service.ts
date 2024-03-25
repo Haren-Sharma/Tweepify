@@ -19,7 +19,10 @@ export class TweetService {
   }
 
   async getOne(id: string) {
-    const tweet = await this.tweetRepo.findOne({ where: { id } });
+    const tweet = await this.tweetRepo.findOne({
+      where: { id },
+      relations: ['user'],
+    });
     if (!tweet) throw new NotFoundException('Doesnot Exsist');
     return tweet;
   }
@@ -28,7 +31,7 @@ export class TweetService {
     return await this.tweetRepo.find({
       relations: ['user'],
       select: {
-        user: { id: true, username: true, isVerified: true, image: true },
+        user: { id: true, name: true, username: true, image: true },
       },
     });
   }

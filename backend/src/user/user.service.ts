@@ -34,13 +34,13 @@ export class UserService {
   }
 
   async getOne(id: string) {
-    const user = await this.userRepo.findOne({ where: { id } });
+    const user = await this.userRepo.findOne({ where: { id } ,relations:['tweets']});
     if (!user) throw new NotFoundException('User Doesnot Exsist');
     return user;
   }
 
   async list() {
-    return await this.userRepo.find({relations:['tweets'],select:{id:true,username:true,isVerified:true}});
+    return await this.userRepo.find({});
   }
 
   async update(id: string, data: UpdateUserDto) {
