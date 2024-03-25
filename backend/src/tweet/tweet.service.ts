@@ -8,8 +8,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 export class TweetService {
   constructor(@InjectRepository(Tweet) private tweetRepo: Repository<Tweet>) {}
   async createTweet(data: CreateTweetDto) {
-    const {userId,content,image}=data;
-    const tweet = this.tweetRepo.create({content,image,user:{id:userId}});
+    const { userId, content, image } = data;
+    const tweet = this.tweetRepo.create({
+      content,
+      image,
+      user: { id: userId },
+    });
     await this.tweetRepo.save(tweet);
     return tweet;
   }
@@ -21,7 +25,12 @@ export class TweetService {
   }
 
   async list() {
-    return await this.tweetRepo.find({relations:['user']});
+    return await this.tweetRepo.find({
+      relations: ['user'],
+      select: {
+        user: { id: true, username: true, isVerified: true, image: true },
+      },
+    });
   }
 
   async delete(id: string) {
