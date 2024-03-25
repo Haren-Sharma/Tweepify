@@ -19,10 +19,11 @@ export class UserService {
           this.userRepo.findOne({ where: { email: data.email } }),
           this.userRepo.findOne({ where: { username: data.username } }),
         ]);
+        console.log(existingUserWithEmail,existingUserWithUsername);
       if (existingUserWithEmail) {
         throw new Error('Email already in use');
       }
-      if (existingUserWithUsername) {
+      if (existingUserWithUsername?.username!==null) {
         throw new Error('Username already in use');
       }
       const user = this.userRepo.create(data);
@@ -33,14 +34,22 @@ export class UserService {
     }
   }
 
+  async getOneByEmail(email: string) {
+    const user = await this.userRepo.findOne({ where: { email } });
+    return user;
+  }
+
   async getOne(id: string) {
-    const user = await this.userRepo.findOne({ where: { id } ,relations:['tweets']});
+    const user = await this.userRepo.findOne({
+      where: { id },
+      relations: ['tweets'],
+    });
     if (!user) throw new NotFoundException('User Doesnot Exsist');
     return user;
   }
 
   async list() {
-    return await this.userRepo.find({});
+    return await this.userRepo.find({relations:['tokens'],select:{tokens:{id:true}}});
   }
 
   async update(id: string, data: UpdateUserDto) {

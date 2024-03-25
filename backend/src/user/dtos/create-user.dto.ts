@@ -4,11 +4,13 @@ export class CreateUserDto {
   @IsEmail({},{message:'Email should be unique'})
   email: string;
 
+  @IsOptional()
   @IsString()
-  name: string;
+  name?: string;
 
+  @IsOptional()
   @IsString({message:"Username should be unique"})
-  username: string;
+  username?: string;
 
   @IsOptional()
   @IsString()

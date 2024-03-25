@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Tweet } from './tweet.entity';
+import { Token } from './token.entity';
 
 @Entity()
 export class User {
@@ -16,14 +17,17 @@ export class User {
   @OneToMany(() => Tweet, (tweet) => tweet.user)
   tweets: Tweet[];
 
+  @OneToMany(()=>Token,(token)=>token.user)
+  tokens:Token[];
+
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  name: string;
+  @Column({nullable:true})
+  name?: string;
 
-  @Column({ unique: true })
-  username: string;
+  @Column({nullable:true})
+  username?: string;
 
   @Column({ nullable: true })
   image?: string;
@@ -32,7 +36,7 @@ export class User {
   bio?: string;
 
   @Column({ default: false })
-  isVerified: boolean;
+  isVerified?: boolean;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
