@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Token } from 'src/database/entities/token.entity';
+import { TokenRepository } from 'src/database/repositories/token.repo';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 
@@ -11,7 +12,7 @@ const EXPIRATION_API_TOKEN = 12; //hours
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(Token) private tokenRepo: Repository<Token>,
+    private tokenRepo:TokenRepository,
     private userService: UserService,
     private jwtService:JwtService,
   ) {}
