@@ -26,6 +26,7 @@ import { JwtModule } from '@nestjs/jwt';
       port: 5432,
       entities: [User, Tweet,Token],
       database: 'tweepify',
+      logging: true
     }),
     UserModule,
     TweetModule,

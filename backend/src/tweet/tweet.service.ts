@@ -1,12 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Tweet } from 'src/database/entities/tweet.entity';
-import { Repository } from 'typeorm';
 import { CreateTweetDto } from './dtos/create-tweet.dto';
-import { InjectRepository } from '@nestjs/typeorm';
+import { TweetRepository } from 'src/database/repositories/tweet.repo';
 
 @Injectable()
 export class TweetService {
-  constructor(@InjectRepository(Tweet) private tweetRepo: Repository<Tweet>) {}
+  constructor(private tweetRepo:TweetRepository) {}
   async createTweet(data: CreateTweetDto) {
     const { userId, content, image } = data;
     const tweet = this.tweetRepo.create({

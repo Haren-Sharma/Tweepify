@@ -3,27 +3,26 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/database/entities/user.entity';
-import { Repository } from 'typeorm';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { UserRepository } from 'src/database/repositories/user.repo';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
+  constructor(private userRepo:UserRepository) {}
   async createUser(data: CreateUserDto) {
+    const { email, username } = data;
     try {
       const [existingUserWithEmail, existingUserWithUsername] =
         await Promise.all([
-          this.userRepo.findOne({ where: { email: data.email } }),
-          this.userRepo.findOne({ where: { username: data.username } }),
+          !email ? null : this.userRepo.findOne({ where: { email } }),
+          !username ? null : this.userRepo.find({ where: { username } }),
         ]);
-        console.log(existingUserWithEmail,existingUserWithUsername);
+      console.log(existingUserWithEmail, existingUserWithUsername);
       if (existingUserWithEmail) {
         throw new Error('Email already in use');
       }
-      if (existingUserWithUsername?.username!==null) {
+      if (existingUserWithUsername) {
         throw new Error('Username already in use');
       }
       const user = this.userRepo.create(data);
@@ -49,7 +48,10 @@ export class UserService {
   }
 
   async list() {
-    return await this.userRepo.find({relations:['tokens'],select:{tokens:{id:true}}});
+    return await this.userRepo.find({
+      relations: ['tokens','tweets'],
+      select: { tokens: { id: true } },
+    });
   }
 
   async update(id: string, data: UpdateUserDto) {
