@@ -12,9 +12,9 @@ const EXPIRATION_API_TOKEN = 12; //hours
 @Injectable()
 export class AuthService {
   constructor(
-    private tokenRepo:TokenRepository,
+    private tokenRepo: TokenRepository,
     private userService: UserService,
-    private jwtService:JwtService,
+    private jwtService: JwtService,
   ) {}
 
   async login(email: string, emailToken: string) {
@@ -54,13 +54,16 @@ export class AuthService {
         user: { id: userId },
       });
       await this.tokenRepo.save(apitoken);
-      
+
       //invalidate the email token as well
-      await this.tokenRepo.save({...token,valid:false})
+      await this.tokenRepo.save({ ...token, valid: false });
 
       //genearte jwt token
-      const jwt=await this.jwtService.signAsync({id:apitoken.id})
-      return jwt;
+      const authToken = await this.jwtService.signAsync({
+        tokenId: apitoken.id,
+        userId: apitoken.user.id,
+      });
+      return { authToken };
     } catch (err) {
       throw new BadRequestException(err.message);
     }
