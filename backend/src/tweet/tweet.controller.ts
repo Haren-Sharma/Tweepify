@@ -14,13 +14,13 @@ import { AuthGuard } from 'src/Guards/auth.guard';
 
 @Controller('tweet')
 @UseGuards(AuthGuard)
-export class TweetController {
+export class TweetController {  
   constructor(private tweetService: TweetService) {}
   @Post()
-  createTweet(@Body() body: CreateTweetDto, @Req() req: any) {
-    const { id } = req?.user;
-    return this.tweetService.createTweet(body, id);
-  }
+  createTweet(@Body() body: CreateTweetDto, @Req() req: any) { 
+    const { id } = req?.user; 
+    return this.tweetService.createTweet(body, id); 
+  } 
 
   @Get('/:id')
   getOneTweetById(@Param('id') id: string) {

@@ -1,14 +1,21 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Token } from 'src/database/entities/token.entity';
 import { TokenRepository } from 'src/database/repositories/token.repo';
 import { UserService } from 'src/user/user.service';
-import { Repository } from 'typeorm';
+import * as nodemailer from 'nodemailer';
 
 const EXPIRATION_EMAIL_TOKEN = 10; //mins
 const EXPIRATION_API_TOKEN = 12; //hours
-
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'harensharma33@gmail.com',
+    pass: 'piot oswj snox mebn',
+  },
+});
 @Injectable()
 export class AuthService {
   constructor(
@@ -16,6 +23,22 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
+
+  async sendEmail(to: string, text: string) {
+    const mailOptions = {
+      from: 'harensharma33@gmail.com', // sender address
+      to: to, // list of receivers
+      subject: 'Email-Token', // Subject line
+      text, // Plain text body
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+      console.log('Email sent successfully');
+    } catch (error) {
+      console.error('Error sending email:', error);
+    }
+  }
 
   async login(email: string, emailToken: string) {
     //check whether email exsists or not
@@ -30,6 +53,7 @@ export class AuthService {
       ),
     });
     await this.tokenRepo.save(token);
+    await this.sendEmail(email, emailToken);
     return token;
   }
   /*

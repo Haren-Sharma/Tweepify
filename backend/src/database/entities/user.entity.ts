@@ -11,22 +11,22 @@ import { Token } from './token.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToMany(() => Tweet, (tweet) => tweet.user)
+  @OneToMany(() => Tweet, (tweet) => tweet.user, { cascade: true })
   tweets: Tweet[];
 
-  @OneToMany(()=>Token,(token)=>token.user)
-  tokens:Token[];
+  @OneToMany(() => Token, (token) => token.user, { cascade: true })
+  tokens: Token[];
 
   @Column({ unique: true })
   email: string;
 
-  @Column({nullable:true})
+  @Column({ nullable: true })
   name?: string;
 
-  @Column({nullable:true})
+  @Column({ nullable: true })
   username?: string;
 
   @Column({ nullable: true })
