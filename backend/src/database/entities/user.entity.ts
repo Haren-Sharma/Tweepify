@@ -14,10 +14,10 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @OneToMany(() => Tweet, (tweet) => tweet.user, { cascade: true })
+  @OneToMany(() => Tweet, (tweet) => tweet.user)
   tweets: Tweet[];
 
-  @OneToMany(() => Token, (token) => token.user, { cascade: true })
+  @OneToMany(() => Token, (token) => token.user)
   tokens: Token[];
 
   @Column({ unique: true })

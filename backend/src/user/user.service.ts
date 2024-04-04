@@ -18,7 +18,6 @@ export class UserService {
           !email ? null : this.userRepo.findOne({ where: { email } }),
           !username ? null : this.userRepo.find({ where: { username } }),
         ]);
-      console.log(existingUserWithEmail, existingUserWithUsername);
       if (existingUserWithEmail) {
         throw new Error('Email already in use');
       }
