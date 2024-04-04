@@ -1,17 +1,26 @@
-import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateTweetDto } from './dtos/create-tweet.dto';
 import { TweetService } from './tweet.service';
 import { AuthGuard } from 'src/Guards/auth.guard';
-import { Request } from 'express';
 
 @Controller('tweet')
 @UseGuards(AuthGuard)
-export class TweetController {
+export class TweetController {  
   constructor(private tweetService: TweetService) {}
   @Post()
-  createTweet(@Body() body: CreateTweetDto) {
-    return this.tweetService.createTweet(body);
-  }
+  createTweet(@Body() body: CreateTweetDto, @Req() req: any) { 
+    const { id } = req?.user; 
+    return this.tweetService.createTweet(body, id); 
+  } 
 
   @Get('/:id')
   getOneTweetById(@Param('id') id: string) {
@@ -19,8 +28,8 @@ export class TweetController {
   }
 
   @Get()
-  listAll(@Req() re:any) {
-    console.log(re?.tokenId);
+  listAll(@Req() re: any) {
+    console.log(re?.user);
     return this.tweetService.list();
   }
 

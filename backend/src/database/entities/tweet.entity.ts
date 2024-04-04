@@ -10,7 +10,7 @@ import { User } from './user.entity';
 
 @Entity()
 export class Tweet {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @ManyToOne(() => User, (user) => user.tweets)

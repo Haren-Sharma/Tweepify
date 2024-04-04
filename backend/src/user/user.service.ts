@@ -62,8 +62,13 @@ export class UserService {
   }
 
   async delete(id: string) {
+    
     const user = await this.getOne(id);
-    await this.userRepo.delete(id);
+    try{
+      await this.userRepo.delete(id);
+    }catch(err){
+      console.log(err)
+    }
     return `User with id:${id} deleted successfully`;
   }
 }

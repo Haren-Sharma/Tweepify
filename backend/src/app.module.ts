@@ -15,7 +15,7 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule.register({
       global:true,
       secret:'123456',
-      signOptions:{expiresIn:'120000s'}
+      signOptions:{expiresIn:'300s'}
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -26,7 +26,6 @@ import { JwtModule } from '@nestjs/jwt';
       port: 5432,
       entities: [User, Tweet,Token],
       database: 'tweepify',
-      logging: true
     }),
     UserModule,
     TweetModule,

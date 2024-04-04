@@ -5,8 +5,8 @@ import { TweetRepository } from 'src/database/repositories/tweet.repo';
 @Injectable()
 export class TweetService {
   constructor(private tweetRepo:TweetRepository) {}
-  async createTweet(data: CreateTweetDto) {
-    const { userId, content, image } = data;
+  async createTweet(data: CreateTweetDto,userId:string) {
+    const { content, image } = data;
     const tweet = this.tweetRepo.create({
       content,
       image,
