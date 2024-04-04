@@ -13,7 +13,7 @@ export class Tweet {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (user) => user.tweets)
+  @ManyToOne(() => User, (user) => user.tweets, { onDelete: 'CASCADE' })
   user: User;
 
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
